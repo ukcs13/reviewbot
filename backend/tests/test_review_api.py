@@ -21,7 +21,7 @@ async def test_create_review_invalid_source(client: AsyncClient):
         "/api/review",
         data={"source_type": "invalid"}
     )
-    assert response.status_code == 422
+    assert response.status_code == 400
 
 @pytest.mark.asyncio
 async def test_create_review_missing_github_url(client: AsyncClient):

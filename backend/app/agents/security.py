@@ -21,12 +21,12 @@ Check EVERY file for:
 - Missing rate limiting 
 - Missing HTTPS enforcement 
 - Eval() or exec() with user-controlled input 
-- XML/YAML deserialization vulnerabilities 
-- Missing CSRF protection 
+-XML/YAML deserialization vulnerabilities
+- Missing CSRF protection
 
-IMPORTANT: If you see any of these patterns, flag them. Do not say 
-"looks good" unless you have verified every file carefully. 
-Be specific — mention the exact file name and line context. 
+IMPORTANT: Flag REAL security issues that are standard OWASP vulnerabilities.
+Do not say "looks good" unless you have verified every file carefully.
+Be specific — mention the exact file name and line context.
 
 Respond ONLY with raw JSON, no markdown fences: 
 { 

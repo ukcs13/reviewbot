@@ -3,10 +3,45 @@ import uuid
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, Text, func
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy import JSON, DateTime, Enum, ForeignKey, Integer, String, Text, TypeDecorator, func
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.types import CHAR
 
+
+class GUID(TypeDecorator[uuid.UUID]):
+    """Platform-independent GUID type.
+    Uses PostgreSQL's UUID type, otherwise uses CHAR(36), storing as string.
+    """
+    impl = CHAR
+    cache_ok = True
+
+    def load_dialect_impl(self, dialect: Any) -> Any:
+        if dialect.name == "postgresql":
+            return dialect.type_descriptor(PG_UUID(as_uuid=True))
+        else:
+            return dialect.type_descriptor(CHAR(36))
+
+    def process_bind_param(self, value: Any, dialect: Any) -> Optional[str]:
+        if value is None:
+            return value
+        elif dialect.name == "postgresql":
+            return str(value)
+        else:
+            if not isinstance(value, uuid.UUID):
+                return str(uuid.UUID(value))
+            else:
+                return str(value)
+
+    def process_result_value(self, value: Any, dialect: Any) -> Optional[uuid.UUID]:
+        if value is None:
+            return value
+        else:
+            if not isinstance(value, uuid.UUID):
+                return uuid.UUID(value)
+            else:
+                return value
 
 class Base(DeclarativeBase):
     """Base class for all database models."""
@@ -41,7 +76,7 @@ class Review(Base):
     """
     __tablename__ = "reviews"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(GUID(), primary_key=True, default=uuid.uuid4)
     user_github_login: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     source_type: Mapped[SourceType] = mapped_column(Enum(SourceType), nullable=False)
     source_identifier: Mapped[str] = mapped_column(String(500), nullable=False)
@@ -58,8 +93,8 @@ class Review(Base):
     file_count: Mapped[int] = mapped_column(Integer, default=0)
     
     # Metadata
-    focus_areas: Mapped[List[str]] = mapped_column(JSONB, default=list)
-    agent_results: Mapped[Dict[str, Any]] = mapped_column(JSONB, default=dict)
+    focus_areas: Mapped[List[str]] = mapped_column(JSON().with_variant(JSONB, "postgresql"), default=list)
+    agent_results: Mapped[Dict[str, Any]] = mapped_column(JSON().with_variant(JSONB, "postgresql"), default=dict)
     review_time_ms: Mapped[int] = mapped_column(Integer, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
@@ -73,8 +108,8 @@ class Issue(Base):
     """
     __tablename__ = "issues"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    review_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("reviews.id", ondelete="CASCADE"), nullable=False)
+    id: Mapped[uuid.UUID] = mapped_column(GUID(), primary_key=True, default=uuid.uuid4)
+    review_id: Mapped[uuid.UUID] = mapped_column(GUID(), ForeignKey("reviews.id", ondelete="CASCADE"), nullable=False)
     severity: Mapped[Severity] = mapped_column(Enum(Severity), nullable=False, index=True)
     category: Mapped[str] = mapped_column(String(50), nullable=False)
     title: Mapped[str] = mapped_column(String(255), nullable=False)

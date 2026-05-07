@@ -1,5 +1,6 @@
+from typing import Any
+
 import redis.asyncio as redis
-from typing import Any, cast
 from fastapi import APIRouter, Response, status
 from sqlalchemy import select
 

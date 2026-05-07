@@ -173,8 +173,13 @@ def _select_files(all_files: list[str]) -> list[str]:
     """Prioritize security-critical and entry-point files."""
     priority, rest = [], []
     for f in all_files:
+        if any(skip in f for skip in SKIP_PATHS):
+            continue
+        if not any(f.endswith(ext) for ext in CODE_EXTENSIONS):
+            continue
+
         filename = f.split("/")[-1].lower()
-        if filename in [p.lower() for p in PRIORITY_FILES]:
+        if any(filename == p.lower() for p in PRIORITY_FILES):
             priority.append(f)
         elif any(kw in filename for kw in ["auth", "secret", "key", "token", "password", "security", "config", "route", "api", "model", "schema", "db", "database"]):
             priority.append(f)

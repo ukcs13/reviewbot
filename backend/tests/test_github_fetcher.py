@@ -1,7 +1,7 @@
-from app.core.github_fetcher import _select_files_to_fetch
+from app.core.github_fetcher import _select_files
 
 
-def test_select_files_to_fetch():
+def test_select_files():
     file_tree = [
         "main.py",
         "app/config.py",
@@ -13,7 +13,7 @@ def test_select_files_to_fetch():
         "tests/test_main.py"
     ]
     
-    selected = _select_files_to_fetch(file_tree)
+    selected = _select_files(file_tree)
     
     assert "main.py" in selected
     assert "app/config.py" in selected
