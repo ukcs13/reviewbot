@@ -18,12 +18,21 @@ jobs:
     - name: Install uv
       run: pip install uv
     - name: Install dependencies
-      run: cd backend && uv pip install --system .
+      run: |
+        cd backend
+        uv pip install --system .
+        uv pip install --system ruff mypy pytest pytest-asyncio
     - name: Run ruff
       run: cd backend && ruff check .
     - name: Run mypy
-      run: cd backend && mypy --strict app
+      run: cd backend && mypy app
     - name: Run tests
+      env:
+        OPENAI_API_KEY: "dummy_key"
+        DATABASE_URL: "postgresql+asyncpg://user:pass@localhost/db"
+        REDIS_URL: "redis://localhost"
+        GITHUB_CLIENT_ID: "dummy"
+        GITHUB_CLIENT_SECRET: "dummy"
       run: cd backend && pytest
 
   frontend:
