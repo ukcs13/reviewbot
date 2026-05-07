@@ -9,12 +9,12 @@ router = APIRouter()
 settings = get_settings()
 
 @router.get("/health")
-async def health_check():
+async def health_check() -> dict[str, str]:
     """Simple health check for load balancers."""
     return {"status": "ok", "version": "1.0.0"}
 
 @router.get("/ready")
-async def readiness_check(response: Response):
+async def readiness_check(response: Response) -> dict[str, str]:
     """Detailed readiness check verifying DB and Redis connections."""
     db_status = "connected"
     redis_status = "connected"
@@ -30,7 +30,7 @@ async def readiness_check(response: Response):
 
     # Check Redis
     try:
-        r = redis.from_url(settings.REDIS_URL)
+        r = redis.from_url(settings.REDIS_URL) # type: ignore
         await r.ping()
         await r.close()
     except Exception:

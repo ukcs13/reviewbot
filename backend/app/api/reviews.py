@@ -1,6 +1,5 @@
 import uuid
-from typing import List, Optional
-
+from typing import Any, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -16,8 +15,8 @@ async def list_reviews(
     skip: int = Query(0, ge=0),
     limit: int = Query(20, ge=1, le=100),
     db: AsyncSession = Depends(get_db),
-    current_user: Optional[dict] = Depends(get_optional_user)
-):
+    current_user: Optional[dict[str, Any]] = Depends(get_optional_user)
+) -> Any:
     """
     List reviews with pagination. 
     If logged in, shows user's reviews. Otherwise shows public reviews.
@@ -30,7 +29,7 @@ async def list_reviews(
 async def get_review(
     review_id: uuid.UUID,
     db: AsyncSession = Depends(get_db)
-):
+) -> Any:
     """Get detailed results for a specific review."""
     review = await repositories.get_review_by_id(db, review_id)
     if not review:

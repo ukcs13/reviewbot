@@ -1,5 +1,5 @@
 import json
-from typing import Optional
+from typing import Any, Optional
 
 import structlog
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
@@ -23,8 +23,8 @@ async def create_review(
     focus_areas: str = Form("[]"),         # JSON string of selected areas
     file: UploadFile | None = File(None),  # ZIP file for zip_upload mode
     db: AsyncSession = Depends(get_db),
-    current_user: Optional[dict] = Depends(get_optional_user),
-):
+    current_user: Optional[dict[str, Any]] = Depends(get_optional_user),
+) -> Any:
     """
     Accept review request, validate input, run pipeline, return result.
     For ZIP uploads: validate size, extension, and content.
@@ -40,7 +40,7 @@ async def create_review(
             raise HTTPException(422, "Invalid GitHub URL. Must start with https://github.com/")
         source_identifier = github_url
     elif source_type == "zip_upload":
-        if not file or not file.filename.endswith(".zip"):
+        if not file or not (file.filename and file.filename.endswith(".zip")):
             raise HTTPException(422, "Must upload a .zip file")
         
         content = await file.read()
@@ -50,7 +50,7 @@ async def create_review(
         filename = file.filename
         source_identifier = filename
     else:
-        raise HTTPException(422, "source_type must be github_url or zip_upload")
+        raise HTTPException(400, "Invalid source type")
 
     try:
         parsed_focus_areas = json.loads(focus_areas)

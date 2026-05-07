@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from typing import Any, AsyncGenerator
 
 import structlog
 from fastapi import APIRouter, FastAPI
@@ -29,7 +30,7 @@ structlog.configure(
 )
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # Startup
     await init_db()
     # redis initialization could go here
@@ -86,7 +87,7 @@ def create_app() -> FastAPI:
     register_exception_handlers(app)
 
     @app.get("/")
-    async def root():
+    async def root() -> dict[str, str]:
         return {
             "message": "AI Project Reviewer API",
             "docs": "/docs",

@@ -19,7 +19,7 @@ async def run_pipeline(
     github_url: Optional[str] = None,
     zip_content: Optional[bytes] = None,
     filename: Optional[str] = None,
-    focus_areas: List[str] = None
+    focus_areas: Optional[List[str]] = None
 ) -> tuple[AggregatedReview, ProjectContext, int]:
     """
     Orchestrates the full review process:

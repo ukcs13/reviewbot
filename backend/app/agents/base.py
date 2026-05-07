@@ -2,7 +2,7 @@ import asyncio
 import json
 from abc import ABC, abstractmethod
 from json import JSONDecodeError
-from typing import ClassVar, List, Optional
+from typing import Any, ClassVar, List, Optional
 
 import structlog
 from openai import AsyncOpenAI
@@ -24,7 +24,7 @@ class BaseAgent(ABC):
     name: ClassVar[str]
     model_name: Optional[str] = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
         self.model = self.model_name or settings.OPENAI_MODEL
 
@@ -75,7 +75,7 @@ class BaseAgent(ABC):
         """Build the system/user prompt for the agent."""
         pass
 
-    def parse_response(self, data: dict) -> AgentResult:
+    def parse_response(self, data: dict[str, Any]) -> AgentResult:
         """Parse the JSON dictionary into an AgentResult."""
         issues = []
         for issue_data in data.get("issues", []):
