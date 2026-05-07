@@ -21,7 +21,7 @@ jobs:
       run: |
         cd backend
         uv pip install --system .
-        uv pip install --system ruff mypy pytest pytest-asyncio
+        uv pip install --system ruff mypy pytest pytest-asyncio aiosqlite
     - name: Run ruff
       run: cd backend && ruff check .
     - name: Run mypy
