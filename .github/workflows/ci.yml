@@ -28,6 +28,7 @@ jobs:
       run: cd backend && mypy app
     - name: Run tests
       env:
+        PYTHONPATH: .
         OPENAI_API_KEY: "dummy_key"
         DATABASE_URL: "postgresql+asyncpg://user:pass@localhost/db"
         REDIS_URL: "redis://localhost"

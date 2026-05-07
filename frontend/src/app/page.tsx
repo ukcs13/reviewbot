@@ -83,7 +83,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="text-xl font-bold">Actionable Fixes</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Don't just find problems. Every issue comes with a detailed fix suggestion that you can copy and paste directly into your editor.
+                  Don&apos;t just find problems. Every issue comes with a detailed fix suggestion that you can copy and paste directly into your editor.
                 </p>
               </div>
             </div>

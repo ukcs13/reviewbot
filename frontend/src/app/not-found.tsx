@@ -13,7 +13,7 @@ export default function NotFound() {
         </div>
         <h1 className="text-4xl font-black mb-4 tracking-tight">Review Not Found</h1>
         <p className="text-muted-foreground max-w-md mb-10 text-lg">
-          We couldn't find the review report you're looking for. It might have been deleted or the link is incorrect.
+          We couldn&apos;t find the review report you&apos;re looking for. It might have been deleted or the link is incorrect.
         </p>
         <Link href="/">
           <Button size="lg" className="font-bold">

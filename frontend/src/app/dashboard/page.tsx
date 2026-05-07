@@ -27,7 +27,7 @@ export default async function DashboardPage() {
             <div>
               <h1 className="text-4xl font-black tracking-tight mb-2">Dashboard</h1>
               <p className="text-muted-foreground">
-                Welcome back, {session.user?.name}. Here's an overview of your code reviews.
+                Welcome back, {session.user?.name}. Here&apos;s an overview of your code reviews.
               </p>
             </div>
           </div>
