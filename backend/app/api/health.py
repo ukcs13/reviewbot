@@ -32,8 +32,8 @@ async def readiness_check(response: Response) -> dict[str, str]:
 
     # Check Redis
     try:
-        # Using Any and type ignore to bypass library-specific typing issues across different environments
-        r: Any = redis.from_url(settings.REDIS_URL)  # type: ignore
+        # Using Any to bypass library-specific typing issues across different environments
+        r = redis.from_url(settings.REDIS_URL)  # type: ignore[no-untyped-call]
         await r.ping()
         await r.close()
     except Exception:
