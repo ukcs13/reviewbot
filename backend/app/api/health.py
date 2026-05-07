@@ -1,4 +1,5 @@
 import redis.asyncio as redis
+from typing import Any, cast
 from fastapi import APIRouter, Response, status
 from sqlalchemy import select
 
@@ -30,10 +31,9 @@ async def readiness_check(response: Response) -> dict[str, str]:
 
     # Check Redis
     try:
-        r = redis.from_url(settings.REDIS_URL)  # type: ignore[no-untyped-call]
-        ping_result = r.ping()
-        if hasattr(ping_result, "__await__"):
-            await ping_result
+        # Using Any and type ignore to bypass library-specific typing issues across different environments
+        r: Any = redis.from_url(settings.REDIS_URL)  # type: ignore
+        await r.ping()
         await r.close()
     except Exception:
         redis_status = "error"
