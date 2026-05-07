@@ -1,7 +1,10 @@
 import io
 import zipfile
+
 import pytest
+
 from app.core.zip_parser import extract_project_context
+
 
 def test_extract_project_context_valid_zip():
     # Create a dummy zip in memory

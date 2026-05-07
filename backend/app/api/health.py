@@ -1,8 +1,9 @@
-from fastapi import APIRouter, status, Response
-from sqlalchemy import select
-from app.db.session import engine
-from app.config import get_settings
 import redis.asyncio as redis
+from fastapi import APIRouter, Response, status
+from sqlalchemy import select
+
+from app.config import get_settings
+from app.db.session import engine
 
 router = APIRouter()
 settings = get_settings()

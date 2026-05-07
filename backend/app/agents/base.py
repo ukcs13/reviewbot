@@ -4,14 +4,14 @@ from abc import ABC, abstractmethod
 from json import JSONDecodeError
 from typing import ClassVar, List, Optional
 
-from openai import AsyncOpenAI
 import structlog
+from openai import AsyncOpenAI
 from pydantic import ValidationError
 
 from app.config import get_settings
+from app.core.file_selector import select_files_for_review
 from app.schemas.issue import AgentResult, IssueBase
 from app.schemas.review import ProjectContext
-from app.core.file_selector import select_files_for_review
 
 logger = structlog.get_logger(__name__)
 settings = get_settings()

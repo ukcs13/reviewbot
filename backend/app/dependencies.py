@@ -1,7 +1,7 @@
-import httpx
-import structlog
 from typing import Optional
-from fastapi import Request, HTTPException, Depends
+
+import structlog
+from fastapi import Depends, HTTPException, Request
 
 from app.config import get_settings
 

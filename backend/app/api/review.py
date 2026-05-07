@@ -1,15 +1,16 @@
 import json
+from typing import Optional
+
 import structlog
-from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.session import get_db
-from app.db import repositories
-from app.schemas.review import ReviewResponse
-from app.core import review_pipeline
 from app.config import get_settings
+from app.core import review_pipeline
+from app.db import repositories
+from app.db.session import get_db
 from app.dependencies import get_optional_user
+from app.schemas.review import ReviewResponse
 
 router = APIRouter()
 logger = structlog.get_logger(__name__)

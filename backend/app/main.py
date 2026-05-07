@@ -1,18 +1,19 @@
-import structlog
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, APIRouter
+
+import structlog
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
-from app.config import get_settings
-from app.db.session import init_db, close_db
-from app.middleware.logging import RequestLoggingMiddleware
-from app.middleware.rate_limit import setup_rate_limiting
-from app.exceptions.handlers import register_exception_handlers
 from app.api.health import router as health_router
 from app.api.review import router as review_router
 from app.api.reviews import router as reviews_router
 from app.api.stats import router as stats_router
+from app.config import get_settings
+from app.db.session import close_db, init_db
+from app.exceptions.handlers import register_exception_handlers
+from app.middleware.logging import RequestLoggingMiddleware
+from app.middleware.rate_limit import setup_rate_limiting
 
 # Configure structured logging
 structlog.configure(

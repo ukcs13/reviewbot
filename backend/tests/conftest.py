@@ -1,14 +1,15 @@
 import asyncio
+from typing import AsyncGenerator
+
 import pytest
 import pytest_asyncio
-from typing import AsyncGenerator
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from httpx import AsyncClient, ASGITransport
 
-from app.main import app
+from app.config import get_settings
 from app.db.models import Base
 from app.db.session import get_db
-from app.config import get_settings
+from app.main import app
 
 settings = get_settings()
 

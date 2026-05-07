@@ -1,4 +1,5 @@
 from typing import List
+
 from .base import BaseAgent
 
 SYSTEM_PROMPT = """You are a senior software engineer reviewing code quality. 

@@ -1,7 +1,10 @@
 import uuid
 from typing import List, Optional
-from pydantic import BaseModel, Field, ConfigDict
+
+from pydantic import BaseModel, ConfigDict, Field
+
 from app.db.models import Severity
+
 
 class IssueBase(BaseModel):
     """Base schema for an issue."""

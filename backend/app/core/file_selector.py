@@ -1,7 +1,9 @@
+from typing import List, Tuple
+
 import structlog
-from typing import List, Dict, Tuple
-from app.schemas.review import ProjectContext
+
 from app.config import get_settings
+from app.schemas.review import ProjectContext
 
 logger = structlog.get_logger(__name__)
 settings = get_settings()

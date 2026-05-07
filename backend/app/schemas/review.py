@@ -1,10 +1,12 @@
 import uuid
 from datetime import datetime
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field, ConfigDict
 
-from app.db.models import SourceType, ReviewDecision
-from app.schemas.issue import IssueItem, IssueBase
+from pydantic import BaseModel, ConfigDict, Field
+
+from app.db.models import ReviewDecision, SourceType
+from app.schemas.issue import IssueBase, IssueItem
+
 
 class ReviewRequest(BaseModel):
     """Schema for a review request."""

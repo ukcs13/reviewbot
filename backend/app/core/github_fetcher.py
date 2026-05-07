@@ -1,10 +1,12 @@
 import asyncio
 import base64
 import re
+
 import httpx
-from app.schemas.review import ProjectContext
-from app.config import get_settings
 import structlog
+
+from app.config import get_settings
+from app.schemas.review import ProjectContext
 
 logger = structlog.get_logger()
 settings = get_settings()

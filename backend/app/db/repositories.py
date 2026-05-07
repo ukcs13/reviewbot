@@ -1,14 +1,14 @@
 import uuid
 from datetime import datetime, timedelta
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
 
-from sqlalchemy import select, func, desc
+from sqlalchemy import desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.db.models import Review, Issue, Severity
-from app.schemas.review import AggregatedReview, ReviewCreate, ReviewDetail
-from app.schemas.issue import AgentResult, IssueBase
+from app.db.models import Issue, Review, Severity
+from app.schemas.review import AggregatedReview
+
 
 async def create_review(
     db: AsyncSession, 

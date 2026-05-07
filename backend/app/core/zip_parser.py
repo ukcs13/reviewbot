@@ -1,9 +1,11 @@
 import io
 import zipfile
+from typing import Dict, List
+
 import structlog
-from typing import List, Dict
-from app.schemas.review import ProjectContext
+
 from app.config import get_settings
+from app.schemas.review import ProjectContext
 
 logger = structlog.get_logger(__name__)
 settings = get_settings()

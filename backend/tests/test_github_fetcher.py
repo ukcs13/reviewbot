@@ -1,5 +1,5 @@
-import pytest
 from app.core.github_fetcher import _select_files_to_fetch
+
 
 def test_select_files_to_fetch():
     file_tree = [

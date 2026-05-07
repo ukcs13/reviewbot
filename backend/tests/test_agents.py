@@ -1,13 +1,14 @@
+
 import pytest
-from unittest.mock import MagicMock, patch
+
 from app.agents.security import SecurityAgent
 from app.schemas.review import ProjectContext
-from app.schemas.issue import AgentResult
+
 
 @pytest.mark.asyncio
 async def test_security_agent_prompt_build():
     agent = SecurityAgent()
-    context = ProjectContext(
+    _ = ProjectContext(
         project_name="test",
         files={"main.py": "print('hello')"},
         file_tree=["main.py"],
