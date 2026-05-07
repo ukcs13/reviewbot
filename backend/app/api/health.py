@@ -1,0 +1,51 @@
+from fastapi import APIRouter, status, Response
+from sqlalchemy import select
+from app.db.session import engine
+from app.config import get_settings
+import redis.asyncio as redis
+
+router = APIRouter()
+settings = get_settings()
+
+@router.get("/health")
+async def health_check():
+    """Simple health check for load balancers."""
+    return {"status": "ok", "version": "1.0.0"}
+
+@router.get("/ready")
+async def readiness_check(response: Response):
+    """Detailed readiness check verifying DB and Redis connections."""
+    db_status = "connected"
+    redis_status = "connected"
+    is_ready = True
+
+    # Check Database
+    try:
+        async with engine.connect() as conn:
+            await conn.execute(select(1))
+    except Exception:
+        db_status = "error"
+        is_ready = False
+
+    # Check Redis
+    try:
+        r = redis.from_url(settings.REDIS_URL)
+        await r.ping()
+        await r.close()
+    except Exception:
+        redis_status = "error"
+        is_ready = False
+
+    if not is_ready:
+        response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+        return {
+            "status": "not_ready",
+            "database": db_status,
+            "redis": redis_status
+        }
+
+    return {
+        "status": "ready",
+        "database": db_status,
+        "redis": redis_status
+    }
